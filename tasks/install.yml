@@ -1,4 +1,10 @@
 ---
+- name: Check if dnf is available
+  command: which dnf
+  register: dnf_check
+  changed_when: false
+  failed_when: false
+
 - name: Install dependencies (using dnf for Python 3 systems)
   dnf:
     name: "{{ item }}"
@@ -8,7 +14,7 @@
   retries: 5
   delay: 2
   with_items: "{{ process_exporter_dependencies }}"
-  when: ansible_pkg_mgr == "dnf"
+  when: dnf_check.rc == 0 or ansible_pkg_mgr == "dnf"
   ignore_errors: false
 
 - name: Install dependencies (using yum for older systems)
@@ -20,7 +26,7 @@
   retries: 5
   delay: 2
   with_items: "{{ process_exporter_dependencies }}"
-  when: ansible_pkg_mgr == "yum"
+  when: dnf_check.rc != 0 and (ansible_pkg_mgr == "yum" or ansible_pkg_mgr is not defined)
   ignore_errors: false
 
 - name: Create the process_exporter group
