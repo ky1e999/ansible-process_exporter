@@ -3,3 +3,4 @@ process_exporter_dependencies:
   - libselinux-python
   - policycoreutils-python
   - policycoreutils-python-utils
+  - python-six
