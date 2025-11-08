@@ -1,6 +1,6 @@
 ---
-- name: Install dependencies
-  package:
+- name: Install dependencies (using dnf for Python 3 systems)
+  dnf:
     name: "{{ item }}"
     state: present
   register: _install_dep_packages
@@ -8,6 +8,20 @@
   retries: 5
   delay: 2
   with_items: "{{ process_exporter_dependencies }}"
+  when: ansible_pkg_mgr == "dnf"
+  ignore_errors: false
+
+- name: Install dependencies (using yum for older systems)
+  yum:
+    name: "{{ item }}"
+    state: present
+  register: _install_dep_packages_yum
+  until: _install_dep_packages_yum is success
+  retries: 5
+  delay: 2
+  with_items: "{{ process_exporter_dependencies }}"
+  when: ansible_pkg_mgr == "yum"
+  ignore_errors: false
 
 - name: Create the process_exporter group
   group:

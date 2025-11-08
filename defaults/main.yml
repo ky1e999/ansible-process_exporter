@@ -6,6 +6,6 @@ process_exporter_web_listen_address: "0.0.0.0:19001"
 process_exporter_config_dir: '/etc/process_exporter'
 
 # Process names configuration file
-# The process_exporter_config.yml file is located in the role's files/ directory
+# The process_exporter_config.yml file should be located in the ansible/ directory (same level as apply_role.yml)
 # It will be copied to the target server as config.yml
-# You can modify files/process_exporter_config.yml to customize the configuration
+# You can modify process_exporter_config.yml to customize the configuration

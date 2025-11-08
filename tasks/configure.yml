@@ -10,7 +10,7 @@
 
 - name: Copy configuration file
   copy:
-    src: process_exporter_config.yml
+    src: "{{ playbook_dir }}/process_exporter_config.yml"
     dest: "{{ process_exporter_config_dir }}/config.yml"
     backup: false
     owner: root
